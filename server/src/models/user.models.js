@@ -18,9 +18,18 @@ const userSchema = Schema({
   },
   role: {
     type: String,
-    ennum: ['User', 'Admin'],
-    default: 'User',
+    ennum: ['SuperAdmin', 'Admin', 'Vendeur'],
+    required: true,
+  },
+  type_vendeur: {
+    type: String,
+    ennum: ['Starter', 'Pro', 'Expert'],
+    default: 'Starter',
   },
 });
+
+userSchema.path('type_vendeur').required(function () {
+  return this.type_vendeur === 'Vendeur';
+}, 'vous devez choisir le type de vendeur');
 
 module.exports = model('user', userSchema);

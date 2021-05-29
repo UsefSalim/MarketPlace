@@ -35,8 +35,16 @@
       }
     ],
     "no-plusplus": "off",
-    "complexity": ["error", 6],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "err|req|res|next|val" }],
     "default-case": "error",
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "consistent-return": "off",
+    "func-names": "off",
+    "object-shorthand": "off",
+    "no-process-exit": "off",
+    "implicit-arrow-linebreak": "off",
+    "no-param-reassign": "off",
+    "no-return-await": "off",
+    "no-underscore-dangle": "off"
   }
 }
