@@ -1,6 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 require('dotenv').config({ path: './config/.env' });
 require('./config/db.config');
-
 const express = require('express');
 
 const app = express();
