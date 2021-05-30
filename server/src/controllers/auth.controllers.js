@@ -5,20 +5,36 @@ const {
   loginValidations,
 } = require('../validations/auth.validations');
 
-exports.SuperAdminRegisterController = async (req, res) => {
-  const { email } = req.body;
-  const newUser = await createUser(
+exports.SuperAdminRegisterController = async (req, res) =>
+  await createUser(
     req,
     res,
     User,
     registerValidations,
-    { email },
+    { email: req.body.email },
     'Admin'
   );
-  console.log(newUser);
-  newUser && sendJwtToken(res, 201, newUser);
-};
+exports.VendeurRegisterController = async (req, res) =>
+  await createUser(
+    req,
+    res,
+    User,
+    registerValidations,
+    { email: req.body.email },
+    'Vendeur'
+  );
+exports.ClientRegisterController = async (req, res) =>
+  await createUser(
+    req,
+    res,
+    User,
+    registerValidations,
+    { email: req.body.email },
+    'Client'
+  );
+
 exports.loginController = async (req, res) => {
+  // All Login
   const { email } = req.body;
   await login(req, res, User, loginValidations, { email });
 };

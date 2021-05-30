@@ -48,6 +48,26 @@ const userSchema = Schema({
   actived: {
     type: Boolean,
   },
+  livraison: {
+    type: String,
+    ennum: {
+      values: ['Standard', 'Express '],
+      message: '{VALUE} non supporté',
+    },
+  },
+  total_vente: {
+    type: Number,
+  },
+});
+userSchema.pre(['save'], function (next) {
+  switch (this.role) {
+    case 'Vendeur':
+      this.total_vente = 0;
+      break;
+    default:
+      break;
+  }
+  next();
 });
 userSchema.pre(['updateOne', 'findOneAndUpdate', 'save'], function (next) {
   switch (this.type_vendeur) {
@@ -77,16 +97,20 @@ userSchema.pre(['save'], function (next) {
   }
   next();
 });
-userSchema.path('type_vendeur').required(function () {
-  return this.role === 'Vendeur';
-}, 'vous devez choisir le type de vendeur');
+userSchema.pre(['save', 'findOneAndUpdate', 'updateOne'], function (next) {
+  switch (this.type_vendeur) {
+    case 'Expert':
+      this.livraison = 'Expert';
+      break;
+    default:
+      this.livraison = 'Standard';
+      break;
+  }
+  next();
+});
 
 userSchema.path('id_fiscale').required(function () {
   return this.role === 'Vendeur';
 }, 'un vendeur doit envoyer un identifiant fiscale');
-
-userSchema.path('nombre_article').required(function () {
-  return this.role === 'Vendeur';
-}, "vous devais présiser un nombre d'article pour le vendeur");
 
 module.exports = model('user', userSchema);

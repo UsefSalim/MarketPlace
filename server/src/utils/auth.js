@@ -45,7 +45,9 @@ exports.createUser = async (
   );
   if (Role) newUser.role = Role;
   const savedUser = await newUser.save();
-  if (savedUser) return newUser;
+  if (savedUser && newUser.role !== 'Client')
+    return res.status(200).json({ actived: false });
+  if (savedUser) this.sendJwtToken(res, 201, newUser);
 };
 
 exports.login = async (req, res, Model, validation, finder) => {
@@ -57,8 +59,13 @@ exports.login = async (req, res, Model, validation, finder) => {
     !(await bcrypt.compare(req.body.password, UserExist.password))
   )
     return res.status(400).json('identifiant ou password Incorrect');
-  if (UserExist.actived === false) {
-    return res.status(200).jsoon({ activated: false });
+  if (UserExist.actived === false && UserExist.role === 'Admin') {
+    return res.status(200).json({ activated: false, role: 'Admin' });
+  }
+  if (UserExist.actived === false && UserExist.role === 'Vendeur') {
+    return res
+      .status(200)
+      .json("En Attente d'activation de votre compte par Un administrateur");
   }
   this.sendJwtToken(res, 200, UserExist);
 };

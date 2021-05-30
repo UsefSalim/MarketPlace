@@ -43,6 +43,7 @@ module.exports = (app) => {
   app.use('/api', limiter);
   app.use('/api/v1/auth', authRoutes);
   app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+  app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_ID));
   app.use(error);
   app.use('*', verifIsAuthenticated);
 };

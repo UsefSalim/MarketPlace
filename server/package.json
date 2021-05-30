@@ -23,6 +23,7 @@
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.12",
+    "stripe": "^8.150.0",
     "validator": "^13.6.0",
     "xelor": "^1.6.15"
   },
