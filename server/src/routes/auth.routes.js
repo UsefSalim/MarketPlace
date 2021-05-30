@@ -1,13 +1,20 @@
 const express = require('express');
+const User = require('../models/user.models');
 
 const authRoutes = express.Router();
 const {
-  registerController,
+  SuperAdminRegisterController,
   loginController,
   logoutController,
 } = require('../controllers/auth.controllers');
 
-authRoutes.post('/register', registerController);
+const { accessedBy } = require('../middlewares/auth.middlewares');
+
+authRoutes.post(
+  '/adminRegister',
+  accessedBy(User, 'SuperAdmin'),
+  SuperAdminRegisterController
+);
 authRoutes.post('/login', loginController);
 authRoutes.get('/logout', logoutController);
 

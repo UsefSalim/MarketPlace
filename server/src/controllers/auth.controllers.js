@@ -1,13 +1,22 @@
-const { register, login } = require('xelor');
+const { createUser, sendJwtToken, login } = require('../utils/auth');
 const User = require('../models/user.models');
 const {
   registerValidations,
   loginValidations,
 } = require('../validations/auth.validations');
 
-exports.registerController = async (req, res) => {
+exports.SuperAdminRegisterController = async (req, res) => {
   const { email } = req.body;
-  await register(req, res, User, registerValidations, { email });
+  const newUser = await createUser(
+    req,
+    res,
+    User,
+    registerValidations,
+    { email },
+    'Admin'
+  );
+  console.log(newUser);
+  newUser && sendJwtToken(res, 201, newUser);
 };
 exports.loginController = async (req, res) => {
   const { email } = req.body;
